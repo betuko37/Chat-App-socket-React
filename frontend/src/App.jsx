@@ -25,6 +25,14 @@ function App() {
   useEffect(() => {
     socket.on("message", receiveMessage);
 
+    socket.on("notification", (data) => {
+        console.log("Nueva notificación:", data);
+    
+        if (Notification.permission === "granted") {
+            new Notification(data.title, { body: data.message });
+        }
+    });
+
     return () => {
       socket.off("message", receiveMessage);
     };
